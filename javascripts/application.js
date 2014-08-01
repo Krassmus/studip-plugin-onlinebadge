@@ -69,24 +69,29 @@ STUDIP.OnlineBadge = {
     },
     syncBuddies: function(buddies, current) {
         // check old status
-        jQuery.each(buddies, function (id, name) {
+        if (buddies) {
+            jQuery.each(buddies, function (id, name) {
 
-            // buddy still online
-            if (id in current) {
-                delete current[id];
-            } else {
-                delete buddies[id];
-            }
-        });
-        // add new arrivals
-        jQuery.each(current, function (id, name) {
-            buddies[id] = name;
-        });
+                // buddy still online
+                if (id in current) {
+                    delete current[id];
+                } else {
+                    delete buddies[id];
+                }
+            });
+        }
+        if (current) {
+            // add new arrivals
+            jQuery.each(current, function (id, name) {
+                buddies[id] = name;
+            });
+        }
      },
      announce: function(buddies) {
         var length = 0;
-        jQuery.each(buddies, function () { length += 1; });
-
+        if (buddies) {
+            jQuery.each(buddies, function () { length += 1; });
+        }
         // announce noone
         if (length === 0) {
             return;
@@ -99,23 +104,27 @@ STUDIP.OnlineBadge = {
         }
     },
     announceBuddy: function(buddies) {
-        jQuery.each(buddies, function (id, username) {
+        if (buddies) {
+            jQuery.each(buddies, function (id, username) {
 
-            var title = jQuery.mustache(STUDIP.OnlineBadge.templates["single-title"],  {id: id, username: username});
-            var text = jQuery.mustache(STUDIP.OnlineBadge.templates["single-text"],  {id: id, username: username});
+                var title = jQuery.mustache(STUDIP.OnlineBadge.templates["single-title"],  {id: id, username: username});
+                var text = jQuery.mustache(STUDIP.OnlineBadge.templates["single-text"],  {id: id, username: username});
 
-            jQuery.gritter.add({
-                title: title,
-                text: text,
-                image: STUDIP.OnlineBadge.pluginUrl('avatar/' + id)
+                jQuery.gritter.add({
+                    title: title,
+                    text: text,
+                    image: STUDIP.OnlineBadge.pluginUrl('avatar/' + id)
+                });
             });
-        });
+        }
     },
     announceBuddies: function(buddies) {
         var usernames = [];
-        jQuery.each(buddies, function (id, username) {
-            usernames.push(username);
-        });
+        if (buddies) {
+            jQuery.each(buddies, function (id, username) {
+                usernames.push(username);
+            });
+        }
         
         jQuery.gritter.add({
             title: "Folgende Buddies sind online",
