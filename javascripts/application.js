@@ -5,11 +5,11 @@ STUDIP.OnlineBadge = {
         if (a.length === 0) {
             return;
         }
-            
+
         var li = a.parent(),
-            // insert hidden badge
+        // insert hidden badge
             badge = jQuery('<span id="online_badge">').appendTo(li).hide();
-            STUDIP.OnlineBadge.templates = {};
+        STUDIP.OnlineBadge.templates = {};
 
         jQuery.each('single-title single-text multi-text'.split(" "), function (i, name) {
             STUDIP.OnlineBadge.templates[name] = jQuery.trim($("#online-badge-" + name).html());
@@ -27,14 +27,17 @@ STUDIP.OnlineBadge = {
      * called periodically
      */
     update: function  (data) {
-        jQuery('#barTopMenu li#nav_community a').attr("title", data.title);
+        jQuery('#barTopMenu li#nav_community a')
+            .attr("title", data.title)
+            .find("img.headericon").data("badge", data.online)
+            .trigger("badgechange");
 
-        if (data.online > 0) {
-            var title = STUDIP.OnlineBadge.getBadgeTitle(data.online);
-            jQuery("#online_badge").html(data.online).show().attr('title', title);
-        } else {
-            jQuery("#online_badge").hide();
-        }
+        /*if (data.online > 0) {
+         var title = STUDIP.OnlineBadge.getBadgeTitle(data.online);
+         jQuery("#online_badge").html(data.online).show().attr('title', title);
+         } else {
+         jQuery("#online_badge").hide();
+         }*/
         STUDIP.OnlineBadge.notifyBuddyActivities(data.buddies);
     },
     resyncSessionStorage: function() {
@@ -61,7 +64,7 @@ STUDIP.OnlineBadge = {
         if (sessionStorage.onlineBadgeBuddies) {
             var buddies = JSON.parse(sessionStorage.onlineBadgeBuddies);
         }
-        
+
         STUDIP.OnlineBadge.syncBuddies(buddies, current);
         STUDIP.OnlineBadge.announce(current);
 
@@ -86,8 +89,8 @@ STUDIP.OnlineBadge = {
                 buddies[id] = name;
             });
         }
-     },
-     announce: function(buddies) {
+    },
+    announce: function(buddies) {
         var length = 0;
         if (buddies) {
             jQuery.each(buddies, function () { length += 1; });
@@ -95,10 +98,10 @@ STUDIP.OnlineBadge = {
         // announce noone
         if (length === 0) {
             return;
-        // announce only a few arrived buddies
+            // announce only a few arrived buddies
         } else if (length <= 3) {
             STUDIP.OnlineBadge.announceBuddy(buddies);
-        // announce a lot buddies
+            // announce a lot buddies
         } else {
             STUDIP.OnlineBadge.announceBuddies(buddies);
         }
@@ -125,7 +128,7 @@ STUDIP.OnlineBadge = {
                 usernames.push(username);
             });
         }
-        
+
         jQuery.gritter.add({
             title: "Folgende Buddies sind online",
             text: jQuery.mustache(STUDIP.OnlineBadge.templates["multi-text"], {usernames: usernames.join(', ')})
