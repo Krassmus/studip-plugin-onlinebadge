@@ -17,7 +17,6 @@ class OnlineBadge extends StudipPlugin implements SystemPlugin
     function __construct()
     {
         parent::__construct();
-        echo "OnlineBadge";
         if (!$GLOBALS["user"]->id) {
             return;
         }
