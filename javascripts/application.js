@@ -19,8 +19,10 @@ STUDIP.OnlineBadge = {
 
         // add class to parent li and redirect to the a's href on click
         li.addClass("online_container")
-            .bind('click', function() {
-                location = STUDIP.ABSOLUTE_URI_STUDIP + a.attr('href');
+            .on('click', function(event) {
+                if (!event.ctrlKey && !event.metaKey) {
+                    location = a.attr('href');
+                }
             });
     },
     /**
