@@ -31,8 +31,7 @@ STUDIP.OnlineBadge = {
     update: function  (data) {
         jQuery('#barTopMenu li#nav_community a')
             .attr("title", data.title)
-            .find("img.headericon").data("badge", data.online)
-            .trigger("badgechange");
+            .attr("data-badge", data.online);
 
         /*if (data.online > 0) {
          var title = STUDIP.OnlineBadge.getBadgeTitle(data.online);
